@@ -11,38 +11,41 @@
     src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
     crossorigin
   ></script>
-  <script
-    src="https://unpkg.com/prop-types@15.6/prop-types.js"
-    crossorigin
-  ></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script type="text/babel">
-    function Btn({ text, fontSize = 50 /* fontSize 기본값 */ }) {
+    function Btn({ text, changeValue }) {
       console.log(text, "Btn");
       return (
         <button
+          onClick={changeValue}
           style={{
             backgroundColor: "tomato",
             color: "white",
             padding: "10px 20px",
             border: 0,
             borderRadius: 10,
-            fontSize,
           }}
         >
           {text}
         </button>
       );
     }
+    /*
+     * 부모 컴포넌트가 rerender되면 자식 컴포넌트도 모두 rerender된다.
+     * memo로 컴포넌트를 기억하게 되면 변경된 컴포넌트만 rerender해줌.
+     * props가 변하지 않으면 다시 그릴 필요 없다고 말해주는 것.
+     */
+    const MemorizedBtn = React.memo(Btn);
 
-    Btn.propTypes = {
-      text: PropTypes.string.isRequired,
-    };
     function App() {
+      const [value, setValue] = React.useState("Save Changes");
+      const changeValue = () => {
+        setValue("Revert Changes");
+      };
       return (
         <div>
-          <Btn text="Save Changes" fontSize={18} />
-          <Btn text="haha" />
+          <MemorizedBtn text={value} changeValue={changeValue} />
+          <MemorizedBtn text="Continue" />
         </div>
       );
     }
