@@ -5,7 +5,7 @@ import Detail from "./routes/Detail";
 function App() {
   const router = createBrowserRouter([
     { path: "/", element: <Home /> },
-    { path: "/movie", element: <Detail /> },
+    { path: "/movie/:id", element: <Detail /> },
   ]);
   return <RouterProvider router={router} />;
 }
